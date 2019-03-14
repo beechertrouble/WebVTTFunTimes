@@ -1,0 +1,140 @@
+* {
+  padding: 0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+body > * {
+  padding: 1rem;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+main, footer, section, div {
+  position: relative;
+}
+
+ol, ul {
+  padding-left: 1.25em;
+}
+
+ol li {
+  padding: 0.25rem 0.5rem;
+}
+ul li {
+  padding: 0.25rem;
+}
+
+main {
+  min-height: 100vh;
+}
+
+footer {
+  background: #eee;
+  text-align: center;
+}
+
+.snug > * + * {
+  margin-top: 2rem;
+}
+
+.cozy > * + * {
+  margin-top: 4rem;
+}
+
+.roomy > * + * {
+  margin-top: 8rem;
+}
+
+.blocky {
+  display: block;
+}
+
+textarea {
+  display: block;
+  box-sizing: border-box;
+  padding: 1em;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  line-height: 1.75;
+  min-height: 50vh;
+  border-color: #ececec;
+  background: #efefef;
+  font-size: 1rem;
+}
+
+#feedback_wrap {
+  color: #fff;
+  padding: 0.5rem;
+}
+#feedback_list li:nth-child(odd) {
+  background: rgba(255,255,255,0.1);
+}
+#feedback_list li:nth-child(even) {
+  background: rgba(255,255,255,0.2);
+}
+
+
+#vid_wrap {
+  box-shadow: inset 0 0 20px #666;
+}
+
+#vid_wrap:before {
+  content : "drop video and/or track files here";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  line-height: 1.5;
+  text-align: center;
+  padding: 0.5rem;
+  transform: translate(0,-50%);
+}
+
+#vid_wrap #vid {
+  opacity: 0;
+}
+
+#vid_wrap.hasVideo #vid {
+  opacity: 1;
+}
+
+
+#vid {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+#vtt_submit_wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+#vtt_fileName {
+  flex: 1 1 auto;
+}
+
+#vtt_submit,
+#vtt_fileName {
+  border: 2px solid navy;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+#vtt_submit {
+  margin-left: 1rem;
+}
+
+#vtt_submit:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}

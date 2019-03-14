@@ -1,0 +1,14 @@
+{
+  "name": "html5-video-track-builder",
+  "version": "0.1.0",
+  "description": "handy helper for making vtt track files for html5 videos",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "beechbot",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^4.1.0"
+  }
+}

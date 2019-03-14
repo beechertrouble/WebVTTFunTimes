@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Video Track .VTT Helper</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+  <main class="cozy">
+
+    <section id="main_header">
+      <h1>Video Track .VTT Helper</h1>
+    </section>
+
+    <section id="vid_wrap">
+      <video id="vid" controls>
+        <track id="track"></track>
+      </video>
+    </section>
+
+    <section id="track_wrap" class="cozy">
+
+      <div id="vtt_edit" method="post" action="" class="blocky">
+        <label>edit your vtt below : </label>
+        <textarea id="vtt_content" class="blocky" name="vtt_content" oninput="testVTT()" placeholder="enter track content here"></textarea>
+        <div id="feedback_wrap">
+          <p id="feedback_status"></p>
+          <ol id="feedback_list"></ol>
+          <pre id="feedback_pre" hidden></pre>
+        </div>
+        <div id="vtt_submit_wrap">
+          <input id="vtt_fileName" type="text" autocomplete="off" placeholder="track filename here ..." />
+          <button id="vtt_submit" type="button" disabled>Download Track File</button>
+        </div>
+      </div>
+
+      <div>
+        <b>tips :</b>
+        <ul>
+          <li>you should be able to read the caption twice while it's on screen.</li>
+          <li>example vtt :
+            <textarea readonly>WEBVTT
+
+00:00.700 --> 00:04.110
+First caption here.
+
+00:00.700 --> 00:04.110
+Even really really really really really really really really really really really really really really really really really really really really really long lines should not have 'new lines' in them, otherwise the format will break ....
+
+00:04.500 --> 00:05.000
+Third caption here .. etc.</textarea>
+          </li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API" target="_blank">more info on VTT formatting here</a></li>
+        </ul>
+      </div>
+
+
+    </section>
+
+  </main>
+  <footer>
+    We are using node <script>
+      document.write(process.versions.node)
+    </script>,
+    Chrome <script>
+      document.write(process.versions.chrome)
+    </script>,
+    and Electron <script>
+      document.write(process.versions.electron)
+    </script>.
+  </footer>
+
+
+  <script src="js/vtt-parser.js"></script>
+  <script>
+
+    var _submitButton = document.getElementById("vtt_submit"),
+      _downloadLink = document.createElement('a'),
+      _vtt_content;
+
+    _submitButton.addEventListener('click', function(e){
+
+      _downloadLink.setAttribute('href', 'data:text/vtt;charset=utf-8,' + encodeURIComponent(_editArea.value));
+      _downloadLink.setAttribute('download', "soFancy.vtt");
+      _downloadLink.click();
+
+    });
+
+    function testVTT() {
+      var pa = new WebVTTParser(),
+        textarea = document.getElementById("vtt_content"),
+        r = pa.parse(textarea.value, "subtitles/captions/descriptions");
+      var wrap = document.getElementById("feedback_wrap"),
+        ol = document.getElementById("feedback_list"),
+        p = document.getElementById("feedback_status"),
+        pre = document.getElementById("feedback_pre")
+      ol.textContent = ""
+      if (r.errors.length > 0) {
+        if (r.errors.length == 1) {
+          p.textContent = "please continue...";
+          wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
+          textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+          _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
+          _submitButton.setAttribute('disabled', true);
+        } else if (r.errors.length < 5) {
+          p.textContent = "Not bad, keep at it!";
+          wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
+          textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+          _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
+          _submitButton.setAttribute('disabled', true);
+        } else {
+          p.textContent = "Uh OH!";
+          wrap.style.background = "HSLA(4, 56%, 43%, 1.00)";
+          textarea.style.background = "pink";
+          _submitButton.style.background = "HSLA(4, 56%, 43%, 1.00)";
+          _submitButton.setAttribute('disabled', true);
+        }
+        for (var i = 0; i < r.errors.length; i++) {
+          var error = r.errors[i],
+            message = "Line " + error.line,
+            li = document.createElement("li")
+          if (error.col)
+            message += ", column " + error.col
+          li.textContent = message + ": " + error.message
+          ol.appendChild(li)
+        }
+      } else {
+        p.textContent = "Your WebVTT is valid!";
+        wrap.style.background = "HSLA(142, 77%, 38%, 1.00)";
+        textarea.style.background = "white";
+        _submitButton.style.background = "HSLA(142, 77%, 38%, 1.00)";
+        _submitButton.removeAttribute('disabled');
+
+        var data = new Blob([_editArea.value], {type: 'text/vtt'});
+        var trackFileURL = _URL.createObjectURL(data);
+        _track.src = trackFileURL;
+        _vid.textTracks[0].mode = "showing";
+
+      }
+      p.textContent += " (" + r.time + "ms)"
+      var s = new WebVTTSerializer()
+      pre.textContent = s.serialize(r.cues);
+      _vtt_content = document.getElementById("vtt_content").value;
+    }
+    window.testVTT = testVTT;
+    testVTT();
+
+    //
+    //
+    //
+
+    var _body = document.getElementsByTagName("body")[0],
+      _vidWrap = document.getElementById("vid_wrap"),
+      _vid =  document.getElementById("vid"),
+      _track =  document.getElementById("track"),
+      _URL = window.URL || window.webkitURL,
+      _editArea = document.getElementById("vtt_content")
+      ;
+
+    var nix = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      loadVideoFromFile = function(file) {
+        var ext = file.name.split(".").pop();
+        if (ext === 'mp4') {
+
+          var fileURL = _URL.createObjectURL(file);
+          _vid.src = fileURL;
+          _vidWrap.classList.add("hasVideo");
+
+        }
+      },
+      setTrackFile = function(file) {
+        var trackFileURL = _URL.createObjectURL(file);
+        console.log('file', file, trackFileURL);
+        _track.src = trackFileURL;
+        _vid.textTracks[0].mode = "showing";
+      },
+      loadVTTfromFile = function(file) {
+        var ext = file.name.split(".").pop();
+        if (ext === 'vtt') {
+          setTrackFile(file);
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            _editArea.value = e.target.result;
+            testVTT();
+          }
+          reader.readAsText(file);
+        } else if (ext === 'txt') {
+          // try to convert from transcript to vtt
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var txt = e.target.result;
+            console.log('@todo: convert transcript to VTT', txt);
+            _editArea.value = txt;
+          };
+          reader.readAsText(file);
+
+        }
+      }
+      ;
+
+    _editArea.addEventListener('drag', nix);
+    _editArea.addEventListener('dragstart', nix);
+    _editArea.addEventListener('dragend', nix);
+    _editArea.addEventListener('dragover', nix);
+    _editArea.addEventListener('dragenter', nix);
+    _editArea.addEventListener('dragleave', nix);
+    _editArea.addEventListener('drop', function(e) {
+
+      nix(e);
+      console.log('derp drop', e);
+      var files = e.dataTransfer.files;
+
+      if (files.length <= 0)
+        return false;
+
+      var i, count = files.length;
+      for(i = 0; i < count; i++) {
+        loadVTTfromFile(files[i]);
+      }
+
+    });
+
+
+    //
+    //
+    //
+
+    _vid.addEventListener('drag', nix);
+    _vid.addEventListener('dragstart', nix);
+    _vid.addEventListener('dragend', nix);
+    _vid.addEventListener('dragover', nix);
+    _vid.addEventListener('dragenter', nix);
+    _vid.addEventListener('dragleave', nix);
+
+    _vid.addEventListener('drop', function(e) {
+      console.log('vid drop', e);
+      nix(e);
+
+      var files = e.dataTransfer.files;
+
+      if (files.length <= 0)
+        return false;
+
+      var i, count = files.length;
+      for(i = 0; i < count; i++) {
+        loadVTTfromFile(files[i]);
+        loadVideoFromFile(files[i]);
+      }
+
+    });
+
+    console.log('_track', _track);
+
+    //
+  </script>
+</body>
+
+</html>
