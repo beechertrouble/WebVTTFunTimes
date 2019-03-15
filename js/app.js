@@ -1,3 +1,4 @@
+
 var _submitButton = document.getElementById("vtt_submit"),
   _downloadLink = document.createElement('a'),
   _vtt_content;
@@ -16,16 +17,26 @@ _submitButton.addEventListener('click', function(e){
 });
 
 function testVTT() {
+  
   var pa = new WebVTTParser(),
     textarea = document.getElementById("vtt_content"),
-    r = pa.parse(textarea.value, "subtitles/captions/descriptions");
-  var wrap = document.getElementById("feedback_wrap"),
+    r = pa.parse(textarea.value, "subtitles/captions/descriptions"),
+    wrap = document.getElementById("feedback_wrap"),
     ol = document.getElementById("feedback_list"),
     p = document.getElementById("feedback_status"),
     pre = document.getElementById("feedback_pre")
-  ol.textContent = ""
+    ;
+
+  ol.textContent = "";
+
   if (r.errors.length > 0) {
-    if (r.errors.length == 1) {
+    if(textarea.value.length <= 0) {
+      p.textContent = "nothing to validate";
+      wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
+      textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+      _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
+      _submitButton.setAttribute('disabled', true);
+    } else if (r.errors.length == 1) {
       p.textContent = "please continue...";
       wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
       textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
@@ -66,10 +77,11 @@ function testVTT() {
     _vid.textTracks[0].mode = "showing";
 
   }
-  p.textContent += " (" + r.time + "ms)"
-  var s = new WebVTTSerializer()
+
+  var s = new WebVTTSerializer();
   pre.textContent = s.serialize(r.cues);
-  _vtt_content = document.getElementById("vtt_content").value;
+  _vtt_content = textarea.value;
+
 }
 window.testVTT = testVTT;
 testVTT();
