@@ -8,52 +8,257 @@
 </head>
 
 <body>
-  <main class="cozy">
+  <main>
 
-    <section id="vid_wrap">
-      <video id="vid" controls>
-        <track id="track"></track>
-      </video>
-    </section>
+    <div id="main_bits_wrap">
 
-    <section id="track_wrap" class="cozy">
+      <section id="vid_wrap">
+        <div id="vid_wrap-inner">
+          <div id="vid_wrap-cta"><span>drop video files <br />and/or track files here</span></div>
+          <video id="vid" controls>
+            <track id="track"></track>
+          </video>
+        </div>
+      </section>
 
-      <div id="vtt_edit" method="post" action="" class="blocky">
-        <label>edit your vtt below : </label>
+      <section id="track_wrap">
         <textarea id="vtt_content" class="blocky" name="vtt_content" oninput="testVTT()" placeholder="enter track content here"></textarea>
-        <div id="feedback_wrap">
-          <p id="feedback_status"></p>
-          <ol id="feedback_list"></ol>
-          <pre id="feedback_pre" hidden></pre>
-        </div>
-        <div id="vtt_submit_wrap">
-          <input id="vtt_fileName" type="text" autocomplete="off" placeholder="track filename here ..." />
-          <button id="vtt_submit" type="button" disabled>Download Track File</button>
-        </div>
-      </div>
+      </section>
 
-      <div>
+    </div>
+
+    <div id="feedback_wrap">
+      <div id="feedback_status"></div>
+      <ol id="feedback_list"></ol>
+      <pre id="feedback_pre" hidden></pre>
+    </div>
+
+    <div id="vtt_submit_wrap">
+      <input id="vtt_fileName" type="text" autocomplete="off" placeholder="track label here ..." />
+      <select id="vtt_type">
+        <option selected>captions</option>
+        <option>chapters</option>
+        <option>descriptions</option>
+        <option>metadata</option>
+        <option>subtitles</option>
+      </select>
+      <select id="vtt_lang">
+        <option value="ab">Abkhazian (ab)</option>
+        <option value="aa">Afar (aa)</option>
+        <option value="af">Afrikaans (af)</option>
+        <option value="ak">Akan (ak)</option>
+        <option value="sq">Albanian (sq)</option>
+        <option value="am">Amharic (am)</option>
+        <option value="ar">Arabic (ar)</option>
+        <option value="an">Aragonese (an)</option>
+        <option value="hy">Armenian (hy)</option>
+        <option value="as">Assamese (as)</option>
+        <option value="av">Avaric (av)</option>
+        <option value="ae">Avestan (ae)</option>
+        <option value="ay">Aymara (ay)</option>
+        <option value="az">Azerbaijani (az)</option>
+        <option value="bm">Bambara (bm)</option>
+        <option value="ba">Bashkir (ba)</option>
+        <option value="eu">Basque (eu)</option>
+        <option value="be">Belarusian (be)</option>
+        <option value="bn">Bengali (Bangla) (bn)</option>
+        <option value="bh">Bihari (bh)</option>
+        <option value="bi">Bislama (bi)</option>
+        <option value="bs">Bosnian (bs)</option>
+        <option value="br">Breton (br)</option>
+        <option value="bg">Bulgarian (bg)</option>
+        <option value="my">Burmese (my)</option>
+        <option value="ca">Catalan (ca)</option>
+        <option value="ch">Chamorro (ch)</option>
+        <option value="ce">Chechen (ce)</option>
+        <option value="ny">Chichewa, Chewa, Nyanja (ny)</option>
+        <option value="zh">Chinese (zh)</option>
+        <option value="zh-Hans">Chinese (Simplified) (zh-Hans)</option>
+        <option value="zh-Hant">Chinese (Traditional) (zh-Hant)</option>
+        <option value="cv">Chuvash (cv)</option>
+        <option value="kw">Cornish (kw)</option>
+        <option value="co">Corsican (co)</option>
+        <option value="cr">Cree (cr)</option>
+        <option value="hr">Croatian (hr)</option>
+        <option value="cs">Czech (cs)</option>
+        <option value="da">Danish (da)</option>
+        <option value="dv">Divehi, Dhivehi, Maldivian (dv)</option>
+        <option value="nl">Dutch (nl)</option>
+        <option value="dz">Dzongkha (dz)</option>
+        <option value="en" selected>English (en)</option>
+        <option value="eo">Esperanto (eo)</option>
+        <option value="et">Estonian (et)</option>
+        <option value="ee">Ewe (ee)</option>
+        <option value="fo">Faroese (fo)</option>
+        <option value="fj">Fijian (fj)</option>
+        <option value="fi">Finnish (fi)</option>
+        <option value="fr">French (fr)</option>
+        <option value="ff">Fula, Fulah, Pulaar, Pular (ff)</option>
+        <option value="gl">Galician (gl)</option>
+        <option value="gd">Gaelic (Scottish) (gd)</option>
+        <option value="gv">Gaelic (Manx) (gv)</option>
+        <option value="ka">Georgian (ka)</option>
+        <option value="de">German (de)</option>
+        <option value="el">Greek (el)</option>
+        <option value="kl">Greenlandic (kl)</option>
+        <option value="gn">Guarani (gn)</option>
+        <option value="gu">Gujarati (gu)</option>
+        <option value="ht">Haitian Creole (ht)</option>
+        <option value="ha">Hausa (ha)</option>
+        <option value="he">Hebrew (he)</option>
+        <option value="hz">Herero (hz)</option>
+        <option value="hi">Hindi (hi)</option>
+        <option value="ho">Hiri Motu (ho)</option>
+        <option value="hu">Hungarian (hu)</option>
+        <option value="is">Icelandic (is)</option>
+        <option value="io">Ido (io)</option>
+        <option value="ig">Igbo (ig)</option>
+        <option value="id, in">Indonesian (id, in)</option>
+        <option value="ia">Interlingua (ia)</option>
+        <option value="ie">Interlingue (ie)</option>
+        <option value="iu">Inuktitut (iu)</option>
+        <option value="ik">Inupiak (ik)</option>
+        <option value="ga">Irish (ga)</option>
+        <option value="it">Italian (it)</option>
+        <option value="ja">Japanese (ja)</option>
+        <option value="jv">Javanese (jv)</option>
+        <option value="kl">Kalaallisut, Greenlandic (kl)</option>
+        <option value="kn">Kannada (kn)</option>
+        <option value="kr">Kanuri (kr)</option>
+        <option value="ks">Kashmiri (ks)</option>
+        <option value="kk">Kazakh (kk)</option>
+        <option value="km">Khmer (km)</option>
+        <option value="ki">Kikuyu (ki)</option>
+        <option value="rw">Kinyarwanda (Rwanda) (rw)</option>
+        <option value="rn">Kirundi (rn)</option>
+        <option value="ky">Kyrgyz (ky)</option>
+        <option value="kv">Komi (kv)</option>
+        <option value="kg">Kongo (kg)</option>
+        <option value="ko">Korean (ko)</option>
+        <option value="ku">Kurdish (ku)</option>
+        <option value="kj">Kwanyama (kj)</option>
+        <option value="lo">Lao (lo)</option>
+        <option value="la">Latin (la)</option>
+        <option value="lv">Latvian (Lettish) (lv)</option>
+        <option value="li">Limburgish ( Limburger) (li)</option>
+        <option value="ln">Lingala (ln)</option>
+        <option value="lt">Lithuanian (lt)</option>
+        <option value="lu">Luga-Katanga (lu)</option>
+        <option value="lg">Luganda, Ganda (lg)</option>
+        <option value="lb">Luxembourgish (lb)</option>
+        <option value="gv">Manx (gv)</option>
+        <option value="mk">Macedonian (mk)</option>
+        <option value="mg">Malagasy (mg)</option>
+        <option value="ms">Malay (ms)</option>
+        <option value="ml">Malayalam (ml)</option>
+        <option value="mt">Maltese (mt)</option>
+        <option value="mi">Maori (mi)</option>
+        <option value="mr">Marathi (mr)</option>
+        <option value="mh">Marshallese (mh)</option>
+        <option value="mo">Moldavian (mo)</option>
+        <option value="mn">Mongolian (mn)</option>
+        <option value="na">Nauru (na)</option>
+        <option value="nv">Navajo (nv)</option>
+        <option value="ng">Ndonga (ng)</option>
+        <option value="nd">Northern Ndebele (nd)</option>
+        <option value="ne">Nepali (ne)</option>
+        <option value="no">Norwegian (no)</option>
+        <option value="nb">Norwegian bokmål (nb)</option>
+        <option value="nn">Norwegian nynorsk (nn)</option>
+        <option value="ii">Nuosu (ii)</option>
+        <option value="oc">Occitan (oc)</option>
+        <option value="oj">Ojibwe (oj)</option>
+        <option value="cu">Old Church Slavonic, Old Bulgarian (cu)</option>
+        <option value="or">Oriya (or)</option>
+        <option value="om">Oromo (Afaan Oromo) (om)</option>
+        <option value="os">Ossetian (os)</option>
+        <option value="pi">Pāli (pi)</option>
+        <option value="ps">Pashto, Pushto (ps)</option>
+        <option value="fa">Persian (Farsi) (fa)</option>
+        <option value="pl">Polish (pl)</option>
+        <option value="pt">Portuguese (pt)</option>
+        <option value="pa">Punjabi (Eastern) (pa)</option>
+        <option value="qu">Quechua (qu)</option>
+        <option value="rm">Romansh (rm)</option>
+        <option value="ro">Romanian (ro)</option>
+        <option value="ru">Russian (ru)</option>
+        <option value="se">Sami (se)</option>
+        <option value="sm">Samoan (sm)</option>
+        <option value="sg">Sango (sg)</option>
+        <option value="sa">Sanskrit (sa)</option>
+        <option value="sr">Serbian (sr)</option>
+        <option value="sh">Serbo-Croatian (sh)</option>
+        <option value="st">Sesotho (st)</option>
+        <option value="tn">Setswana (tn)</option>
+        <option value="sn">Shona (sn)</option>
+        <option value="ii">Sichuan Yi (ii)</option>
+        <option value="sd">Sindhi (sd)</option>
+        <option value="si">Sinhalese (si)</option>
+        <option value="ss">Siswati (ss)</option>
+        <option value="sk">Slovak (sk)</option>
+        <option value="sl">Slovenian (sl)</option>
+        <option value="so">Somali (so)</option>
+        <option value="nr">Southern Ndebele (nr)</option>
+        <option value="es">Spanish (es)</option>
+        <option value="su">Sundanese (su)</option>
+        <option value="sw">Swahili (Kiswahili) (sw)</option>
+        <option value="ss">Swati (ss)</option>
+        <option value="sv">Swedish (sv)</option>
+        <option value="tl">Tagalog (tl)</option>
+        <option value="ty">Tahitian (ty)</option>
+        <option value="tg">Tajik (tg)</option>
+        <option value="ta">Tamil (ta)</option>
+        <option value="tt">Tatar (tt)</option>
+        <option value="te">Telugu (te)</option>
+        <option value="th">Thai (th)</option>
+        <option value="bo">Tibetan (bo)</option>
+        <option value="ti">Tigrinya (ti)</option>
+        <option value="to">Tonga (to)</option>
+        <option value="ts">Tsonga (ts)</option>
+        <option value="tr">Turkish (tr)</option>
+        <option value="tk">Turkmen (tk)</option>
+        <option value="tw">Twi (tw)</option>
+        <option value="ug">Uyghur (ug)</option>
+        <option value="uk">Ukrainian (uk)</option>
+        <option value="ur">Urdu (ur)</option>
+        <option value="uz">Uzbek (uz)</option>
+        <option value="ve">Venda (ve)</option>
+        <option value="vi">Vietnamese (vi)</option>
+        <option value="vo">Volapük (vo)</option>
+        <option value="wa">Wallon (wa)</option>
+        <option value="cy">Welsh (cy)</option>
+        <option value="wo">Wolof (wo)</option>
+        <option value="fy">Western Frisian (fy)</option>
+        <option value="xh">Xhosa (xh)</option>
+        <option value="yi, ji">Yiddish (yi, ji)</option>
+        <option value="yo">Yoruba (yo)</option>
+        <option value="za">Zhuang, Chuang (za)</option>
+        <option value="zu">Zulu (zu)</option>
+      </select>
+      <button id="vtt_submit" type="button" disabled>Save Track File</button>
+    </div>
+
+    <div id="tips_wrap">
+      <div id="tips_content">
         <b>tips :</b>
         <ul>
           <li>you should be able to read the caption twice while it's on screen.</li>
           <li>example vtt :
             <textarea readonly>WEBVTT
 
-00:00.700 --> 00:04.110
-First caption here.
+  00:00.700 --> 00:04.110
+  First caption here.
 
-00:00.700 --> 00:04.110
-Even really really really really really really really really really really really really really really really really really really really really really long lines should not have 'new lines' in them, otherwise the format will break ....
+  00:00.700 --> 00:04.110
+  Even really really really really really really really really really really really really really really really really really really really really really long lines should not have 'new lines' in them, otherwise the format will break ....
 
-00:04.500 --> 00:05.000
-Third caption here .. etc.</textarea>
+  00:04.500 --> 00:05.000
+  Third caption here .. etc.</textarea>
           </li>
           <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API" target="_blank">more info on VTT formatting here</a></li>
         </ul>
       </div>
-
-
-    </section>
+    </div>
 
   </main>
   <footer>
@@ -70,190 +275,7 @@ Third caption here .. etc.</textarea>
 
 
   <script src="js/vtt-parser.js"></script>
-  <script>
-
-    var _submitButton = document.getElementById("vtt_submit"),
-      _downloadLink = document.createElement('a'),
-      _vtt_content;
-
-    _submitButton.addEventListener('click', function(e){
-
-      _downloadLink.setAttribute('href', 'data:text/vtt;charset=utf-8,' + encodeURIComponent(_editArea.value));
-      _downloadLink.setAttribute('download', "soFancy.vtt");
-      _downloadLink.click();
-
-    });
-
-    function testVTT() {
-      var pa = new WebVTTParser(),
-        textarea = document.getElementById("vtt_content"),
-        r = pa.parse(textarea.value, "subtitles/captions/descriptions");
-      var wrap = document.getElementById("feedback_wrap"),
-        ol = document.getElementById("feedback_list"),
-        p = document.getElementById("feedback_status"),
-        pre = document.getElementById("feedback_pre")
-      ol.textContent = ""
-      if (r.errors.length > 0) {
-        if (r.errors.length == 1) {
-          p.textContent = "please continue...";
-          wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-          textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
-          _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
-          _submitButton.setAttribute('disabled', true);
-        } else if (r.errors.length < 5) {
-          p.textContent = "Not bad, keep at it!";
-          wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-          textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
-          _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
-          _submitButton.setAttribute('disabled', true);
-        } else {
-          p.textContent = "Uh OH!";
-          wrap.style.background = "HSLA(4, 56%, 43%, 1.00)";
-          textarea.style.background = "pink";
-          _submitButton.style.background = "HSLA(4, 56%, 43%, 1.00)";
-          _submitButton.setAttribute('disabled', true);
-        }
-        for (var i = 0; i < r.errors.length; i++) {
-          var error = r.errors[i],
-            message = "Line " + error.line,
-            li = document.createElement("li")
-          if (error.col)
-            message += ", column " + error.col
-          li.textContent = message + ": " + error.message
-          ol.appendChild(li)
-        }
-      } else {
-        p.textContent = "Your WebVTT is valid!";
-        wrap.style.background = "HSLA(142, 77%, 38%, 1.00)";
-        textarea.style.background = "white";
-        _submitButton.style.background = "HSLA(142, 77%, 38%, 1.00)";
-        _submitButton.removeAttribute('disabled');
-
-        var data = new Blob([_editArea.value], {type: 'text/vtt'});
-        var trackFileURL = _URL.createObjectURL(data);
-        _track.src = trackFileURL;
-        _vid.textTracks[0].mode = "showing";
-
-      }
-      p.textContent += " (" + r.time + "ms)"
-      var s = new WebVTTSerializer()
-      pre.textContent = s.serialize(r.cues);
-      _vtt_content = document.getElementById("vtt_content").value;
-    }
-    window.testVTT = testVTT;
-    testVTT();
-
-    //
-    //
-    //
-
-    var _body = document.getElementsByTagName("body")[0],
-      _vidWrap = document.getElementById("vid_wrap"),
-      _vid =  document.getElementById("vid"),
-      _track =  document.getElementById("track"),
-      _URL = window.URL || window.webkitURL,
-      _editArea = document.getElementById("vtt_content")
-      ;
-
-    var nix = function(e){
-        e.preventDefault();
-        e.stopPropagation();
-      },
-      loadVideoFromFile = function(file) {
-        var ext = file.name.split(".").pop();
-        if (ext === 'mp4') {
-
-          var fileURL = _URL.createObjectURL(file);
-          _vid.src = fileURL;
-          _vidWrap.classList.add("hasVideo");
-
-        }
-      },
-      setTrackFile = function(file) {
-        var trackFileURL = _URL.createObjectURL(file);
-        console.log('file', file, trackFileURL);
-        _track.src = trackFileURL;
-        _vid.textTracks[0].mode = "showing";
-      },
-      loadVTTfromFile = function(file) {
-        var ext = file.name.split(".").pop();
-        if (ext === 'vtt') {
-          setTrackFile(file);
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            _editArea.value = e.target.result;
-            testVTT();
-          }
-          reader.readAsText(file);
-        } else if (ext === 'txt') {
-          // try to convert from transcript to vtt
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            var txt = e.target.result;
-            console.log('@todo: convert transcript to VTT', txt);
-            _editArea.value = txt;
-          };
-          reader.readAsText(file);
-
-        }
-      }
-      ;
-
-    _editArea.addEventListener('drag', nix);
-    _editArea.addEventListener('dragstart', nix);
-    _editArea.addEventListener('dragend', nix);
-    _editArea.addEventListener('dragover', nix);
-    _editArea.addEventListener('dragenter', nix);
-    _editArea.addEventListener('dragleave', nix);
-    _editArea.addEventListener('drop', function(e) {
-
-      nix(e);
-      console.log('derp drop', e);
-      var files = e.dataTransfer.files;
-
-      if (files.length <= 0)
-        return false;
-
-      var i, count = files.length;
-      for(i = 0; i < count; i++) {
-        loadVTTfromFile(files[i]);
-      }
-
-    });
-
-
-    //
-    //
-    //
-
-    _vid.addEventListener('drag', nix);
-    _vid.addEventListener('dragstart', nix);
-    _vid.addEventListener('dragend', nix);
-    _vid.addEventListener('dragover', nix);
-    _vid.addEventListener('dragenter', nix);
-    _vid.addEventListener('dragleave', nix);
-
-    _vid.addEventListener('drop', function(e) {
-      console.log('vid drop', e);
-      nix(e);
-
-      var files = e.dataTransfer.files;
-
-      if (files.length <= 0)
-        return false;
-
-      var i, count = files.length;
-      for(i = 0; i < count; i++) {
-        loadVTTfromFile(files[i]);
-        loadVideoFromFile(files[i]);
-      }
-
-    });
-
-    console.log('_track', _track);
-
-    //
-  </script>
+  <script src="js/app.js"></script>
 </body>
 
 </html>
