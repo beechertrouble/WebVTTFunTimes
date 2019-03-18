@@ -1,7 +1,10 @@
 
 var _submitButton = document.getElementById("vtt_submit"),
   _downloadLink = document.createElement('a'),
-  _vtt_content;
+  _textArea = document.getElementById("vtt_content"),
+  _vtt_content,
+  _transcriptTimeCodeRegEx = /(\d{2}\:\d{2}\:\d{2}\:\d{2})/
+  ;
 
 _submitButton.addEventListener('click', function(e){
 
@@ -17,10 +20,9 @@ _submitButton.addEventListener('click', function(e){
 });
 
 function testVTT() {
-  
+
   var pa = new WebVTTParser(),
-    textarea = document.getElementById("vtt_content"),
-    r = pa.parse(textarea.value, "subtitles/captions/descriptions"),
+    r = pa.parse(_textArea.value, "subtitles/captions/descriptions"),
     wrap = document.getElementById("feedback_wrap"),
     ol = document.getElementById("feedback_list"),
     p = document.getElementById("feedback_status"),
@@ -30,28 +32,22 @@ function testVTT() {
   ol.textContent = "";
 
   if (r.errors.length > 0) {
-    if(textarea.value.length <= 0) {
+    if(_textArea.value.length <= 0) {
       p.textContent = "nothing to validate";
       wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-      textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
-      _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
-      _submitButton.setAttribute('disabled', true);
-    } else if (r.errors.length == 1) {
-      p.textContent = "please continue...";
-      wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-      textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+      _textArea.style.background = "HSLA(42, 100%, 81%, 1.00)";
       _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
       _submitButton.setAttribute('disabled', true);
     } else if (r.errors.length < 5) {
-      p.textContent = "Not bad, keep at it!";
+      p.textContent = "found some errors (" + r.errors.length + ")";
       wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-      textarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+      _textArea.style.background = "HSLA(42, 100%, 81%, 1.00)";
       _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
       _submitButton.setAttribute('disabled', true);
     } else {
       p.textContent = "Uh OH!";
       wrap.style.background = "HSLA(4, 56%, 43%, 1.00)";
-      textarea.style.background = "pink";
+      _textArea.style.background = "pink";
       _submitButton.style.background = "HSLA(4, 56%, 43%, 1.00)";
       _submitButton.setAttribute('disabled', true);
     }
@@ -67,7 +63,7 @@ function testVTT() {
   } else {
     p.textContent = "Your WebVTT is valid!";
     wrap.style.background = "HSLA(142, 77%, 38%, 1.00)";
-    textarea.style.background = "white";
+    _textArea.style.background = "white";
     _submitButton.style.background = "HSLA(142, 77%, 38%, 1.00)";
     _submitButton.removeAttribute('disabled');
 
@@ -80,7 +76,7 @@ function testVTT() {
 
   var s = new WebVTTSerializer();
   pre.textContent = s.serialize(r.cues);
-  _vtt_content = textarea.value;
+  _vtt_content = _textArea.value;
 
 }
 window.testVTT = testVTT;
@@ -133,7 +129,7 @@ var nix = function(e){
   },
   loadVTTfromFile = function(file) {
     var ext = file.name.split(".").pop();
-    if (ext === 'vtt') {
+    if (ext === 'vtt' || ext === 'txt') {
       setTrackFile(file);
       setTrackLabelFromFile(file);
       var reader = new FileReader();
@@ -142,13 +138,43 @@ var nix = function(e){
         testVTT();
       }
       reader.readAsText(file);
-    } else if (ext === 'txt') {
+    } else if (ext === 'doc' || ext === 'docx') {
       // try to convert from transcript to vtt
       var reader = new FileReader();
       reader.onload = function(e) {
+
         var txt = e.target.result;
-        console.log('@todo: convert transcript to VTT', txt);
-        _editArea.value = txt;
+        var lines = txt.split("\n"),
+          cleaned = ['WEBVTT'];
+
+        lines.forEach(function(line) {
+          if(line.search(_transcriptTimeCodeRegEx) >= 1) {
+
+            var split = line.split(_transcriptTimeCodeRegEx),
+              derp = [];
+
+            split.forEach(function(s) {
+              if(s.search(_transcriptTimeCodeRegEx) >= 0) {
+                var time = s.split(/\:/g);
+                derp = [time[0] + ':' + time[1] + ":" + time[2] + '.' + time[3] + "0 --> "];
+              } else if(derp.length === 1 && s.search(/\x07/g) >= 0) {
+                var cue = s.split(/\x07/g);
+                if(cue.length <= 3 || cue[2] === undefined || cue[2].length <= 0 || cue[2] === "[END]")
+                  return;
+                if(cue[2].trim() === 'END')
+                  return;
+                derp.push(cue[2].replace(/[\u2018|\u2019|\uFFFD]/g, "'").replace(/[\u201C|\u201D]/g, '"'));
+                cleaned.push(derp.join("\n"));
+              }
+            });
+
+          }
+        });
+
+        _editArea.value = cleaned.join("\n\n");
+        setTrackLabelFromFile(file);
+        testVTT();
+
       };
       reader.readAsText(file);
 
@@ -183,4 +209,15 @@ _body.addEventListener('drop', function(e) {
     loadVideoFromFile(files[i]);
   }
 
+});
+
+_textArea.addEventListener('paste', function(e){
+  var clipboardData = e.clipboardData || window.clipboardData;
+  var pastedData = clipboardData.getData('Text');
+  console.log('PASTED DATA! :::: ', pastedData.search(_transcriptTimeCodeRegEx), (pastedData.match(/\n/g)||[]).length, pastedData.split("\n"));
+  //var lines = pastedData.split("\r");
+  // setTimeout(function() {
+  //   var pastedData = _textArea.value;
+  //   console.log('PASTED DATA! :::: ', pastedData.search(_transcriptTimeCodeRegEx), (pastedData.match(/\n/g)||[]).length);
+  // }, 250);
 });
