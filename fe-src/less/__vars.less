@@ -1,0 +1,53 @@
+
+//
+// colors ...
+//
+@white: #fff;
+@black: #000;
+@grey-lt: #c4c4c4;
+@grey-dk: #3b3b3b;
+
+// base color pallette
+@color-primary: #428bca; // nothing is going on
+@color-default: #666;
+@color-active: darken(@color-default, 15%);
+@color-subdue: lighten(@color-default, 15%);
+@color-success: #5cb85c; // great job!
+@color-info:    #5bc0de; // help
+@color-warning: #f0ad4e; // warning, notice
+@color-danger:  #d9534f; // error, danger
+
+@color-highlight: #060;
+
+
+//
+// units ...
+//
+@pad: 0.5rem;
+
+
+//
+// font type things ...
+//
+@text_color: #EEEEEE;
+
+//
+// dimensional things ...
+//
+@width_readable: 30em; //  The optimal line length for your body text is considered to be 50-70 characters per line. Which translates roughly to 21-30ems
+@width_min: 320px;
+@width_max: 1280px;
+@width_stack: 568px;
+@width_mid: ((@width_max - @width_stack) *0.5) + @width_stack;
+
+
+//
+// zindexeseses ...
+//
+@z_base: 1;
+@z_content: 10;
+@z_top: 10000;
+@z_middle: 5000;
+@z_top-minus1: @z_top - 100;
+@z_top-minus2: @z_top - 200;
+@z_top-minus3: @z_top - 300;

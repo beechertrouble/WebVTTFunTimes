@@ -1,0 +1,199 @@
+/**
+* TipZy : accessible ToolTips 
+* - default to a title attr
+* - mind your arias
+* - animations with css
+* - js for positioning & class swappings
+*
+* author : beechbot
+*
+*/ 
+
+@import "__tipzyVars"; 
+
+//
+// !STYLEZ
+// 
+
+
+._tipzy {
+	display: inline-block;
+	position: absolute; 
+	top:-99999px;
+	left:-99999px;
+	padding: @tipzy-pad;
+	max-width: @tipzy-max-w;
+
+	background: @tipzy-bg;
+	color: @tipzy-txtColor;
+	border: @tipzy-border;
+	box-shadow: @tipzy-shadow;
+	
+	opacity: 0;
+	visibility: hidden;
+	
+	transform: translateY(@tipzy-pad *-2);
+	transition:opacity @tipzy-transDuration @tipzy-showDelay, 
+		visibility @tipzy-transDuration @tipzy-showDelay, 
+		transform @tipzy-transDuration @tipzy-showDelay,
+		top 0s @tipzy-showDelay*2,
+		left 0s @tipzy-showDelay*2,
+		right 0s @tipzy-showDelay*2;
+	
+	&[aria-hidden*="true"] {
+		top:-99999px !important;
+		left:-99999px !important;	
+	}
+	
+	&[aria-hidden*="false"] {
+		
+		opacity:1;
+		visibility: visible;
+		transform: translateY(0);
+		
+		transition:opacity @tipzy-transDuration @tipzy-hideDelay, 
+			visibility @tipzy-transDuration @tipzy-hideDelay, 
+			transform @tipzy-transDuration @tipzy-hideDelay,
+			top 0s 0s,
+			left 0s 0s,
+			right 0s 0s;
+		
+	}
+	
+	//
+	// !ARROW thing
+	//
+	
+	&:after,
+	&:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+	}
+	
+	&:after {
+		border-color: rgba(0, 0, 0, 0);
+		border-top-color: @tipzy-bg;
+		border-width: @tipzy-arrowSize;
+		margin-left: @tipzy-arrowSize *-1;
+	}
+	&:before {
+		border-color: rgba(0, 0, 0, 0);
+		border-top-color: @tipzy-borderColor;
+		border-width: @tipzy-arrowSizeWBorder;
+		margin-left: @tipzy-arrowSizeWBorder * -1;
+	}
+	
+	&[data-tipzyleft^="5%"] {  &:after, &:before {left:5%;} }
+	&[data-tipzyleft^="10%"] {  &:after, &:before {left:10%;} }
+	&[data-tipzyleft^="15%"] {  &:after, &:before {left:15%;} }
+	&[data-tipzyleft^="20%"] {  &:after, &:before {left:20%;} }
+	&[data-tipzyleft^="25%"] {  &:after, &:before {left:25%;} }
+	&[data-tipzyleft^="30%"] {  &:after, &:before {left:30%;} }
+	&[data-tipzyleft^="35%"] {  &:after, &:before {left:35%;} }
+	&[data-tipzyleft^="40%"] {  &:after, &:before {left:40%;} }
+	&[data-tipzyleft^="45%"] {  &:after, &:before {left:45%;} }
+	&[data-tipzyleft^="50%"] {  &:after, &:before {left:50%;} }
+	&[data-tipzyleft^="55%"] {  &:after, &:before {left:55%;} }
+	&[data-tipzyleft^="60%"] {  &:after, &:before {left:60%;} }
+	&[data-tipzyleft^="65%"] {  &:after, &:before {left:65%;} }
+	&[data-tipzyleft^="70%"] {  &:after, &:before {left:70%;} }
+	&[data-tipzyleft^="75%"] {  &:after, &:before {left:75%;} }
+	&[data-tipzyleft^="80%"] {  &:after, &:before {left:80%;} }
+	&[data-tipzyleft^="85%"] {  &:after, &:before {left:85%;} }
+	&[data-tipzyleft^="90%"] {  &:after, &:before {left:90%;} }
+	&[data-tipzyleft^="95%"],
+	&[data-tipzyleft^="100%"] {  &:after, &:before {left:95%;} }
+	
+	// when the tip is below the anchor ...
+	&[data-tipzyv="top"] {  
+		
+		transform: translateY(@tipzy-pad *2);
+		&[aria-hidden*="false"] {
+			transform: translateY(0);
+		}
+		
+		&:after,
+		&:before {
+			top: auto;
+			bottom: 100%;
+		}
+		&:after {
+			border-color: rgba(0, 0, 0, 0);
+			border-bottom-color: @tipzy-bg;
+		}
+		&:before {
+			border-color: rgba(0, 0, 0, 0);
+			border-bottom-color: @tipzy-borderColor;
+		}
+	}
+	
+	&:after,
+	&:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	&:after {
+		border-color: rgba(0, 0, 0, 0);
+		border-top-color: @tipzy-bg;
+		border-width: @tipzy-arrowSize;
+		margin-left: @tipzy-arrowSize * -1;
+	}
+	&:before {
+		border-color: rgba(0, 0, 0, 0);
+		border-top-color: @tipzy-borderColor;
+		border-width: @tipzy-arrowSizeWBorder;
+		margin-left: @tipzy-arrowSizeWBorder * -1;
+	}
+	
+	// for stack layout 
+	@media only screen and (max-width: @tipzy-widthStack) {
+		max-width: 90%;
+	}
+	
+	.tipzyStyleOverride();
+	
+}
+
+[dir="rtl"] ._tipzy[aria-hidden*="true"] {
+	left: auto !important;
+	right:-99999px !important;	
+}
+
+// this is so that you can always see all the conent, even in short windows ...
+._tipzy_content {
+	
+	position: relative;
+	display: block;
+	
+	line-height: 1.4;
+	
+	max-height: 50vh;
+	overflow: hidden;
+	overflow-y: auto;
+
+	-ms-overflow-style: none;
+	&::-webkit-scrollbar { 
+	    display: none; 
+	}
+	
+	&:after {
+		content:"";
+		display:block;
+		clear:both;
+	}
+	
+	.tipzyContentStyleOverride();
+	
+}

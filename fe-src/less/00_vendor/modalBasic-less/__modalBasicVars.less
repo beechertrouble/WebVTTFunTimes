@@ -1,0 +1,73 @@
+/**
+* modalBasic : accessible Modals
+*
+* author : beechbot
+*
+*/
+
+//
+// mixins
+//
+._mb_reset() {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size:inherit;
+	font: inherit;
+	vertical-align: baseline;
+	box-sizing: content-box;
+}
+
+._mb_fixed() {
+	position: fixed;
+	top:0px;
+	right:0px;
+	bottom:0px;
+	left:0px;
+}
+
+._mb_clearfix() {
+	&:before,
+	&:after {
+		content: " ";
+		float: none;
+		position: relative;
+		display: table;
+		clear: both;
+	}
+}
+
+
+//
+// branding
+//
+@mb-z: @z_top;
+@mb-width_stack: 560px;
+@mb-max_width_perc: 80%;
+@mb-max_width: 600px;
+@mb-pad: 10px;
+@mb-from_top: 6.5em;
+@mb-from_bottom: 3em;
+@mb-close_from_top: @mb-pad;
+
+@mb-border_color: rgba(255,255,255,0.9);
+@mb-curtain_color: rgba(0,0,0,0.5);
+@mb-shadow: 0 0 0.5em rgba(0,0,0,0.5);
+@mb-bg_color: #ffffff;
+@mb-close_bg_color: @mb-bg_color;
+@md_font-header_size: 1.5em;
+
+
+//
+// animation & transitions
+//
+@keyframes _mb_loading {
+	0% { transform: scale(1); }
+	100% { transform: scale(1.2); }
+}
+@mb-loading_animation: _mb_loading 1s 0s linear infinite reverse;
+
+
+@mb-transition_speed: 0.2s;
+@mb-transition_show: opacity 0s linear @mb-transition_speed, bottom @mb-transition_speed 0s;
+@mb-transition_hide: opacity @mb-transition_speed linear 0s, bottom 0s @mb-transition_speed;

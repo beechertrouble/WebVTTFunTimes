@@ -1,0 +1,290 @@
+/**
+* modalBasic : accessible Modals
+*
+* author : beechbot
+*
+*/
+
+@import "__modalBasicVars";
+
+
+._mb_style-content {
+	width: @mb-max_width_perc;
+	max-width: @mb-max_width;
+	margin: @mb-from_top auto @mb-from_bottom;
+	background: @mb-bg_color;
+	padding:0;
+	line-height: 1.4;
+	box-shadow: @mb-shadow;
+
+	/* reset this because the centering above it relies on centered alignment ... consider basing this on dir attr */
+	text-align: left;
+}
+
+	._mb_style-header {
+		padding: @mb-pad*1.2 @mb-pad @mb-pad;
+		font-size: @md_font-header_size;
+		line-height: 1.1;
+		background: darken(@mb-bg_color, 10%);
+		&:focus {
+			outline: 0px;
+		}
+	}
+
+	._mb_style-body {
+		padding: @mb-pad;
+		&:focus {
+			outline: 0px;
+		}
+	}
+
+	._mb_style-footer {
+		padding: @mb-pad;
+		background: darken(@mb-bg_color, 10%);
+	}
+
+
+//
+// things :
+// @revisit : pretty aggressive in specificity ... hmmm ...
+//
+#_mb_uber {
+	._mb_reset();
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	bottom: 100%;
+	min-width: 100%;
+	overflow: hidden;
+	background: @mb-curtain_color;
+	opacity: 0;
+	transform: translate3d(0,0,0);
+	transition: @mb-transition_hide;
+	z-index: @mb-z;
+
+	//
+	// this nested fixed wrap lets us have a fixed close button
+	//
+	#_mb_fixed_wrap {
+		._mb_reset();
+		position: fixed;
+		top: 0px;
+		right: -2em;
+		padding-right: 1em;
+		bottom: 100%;
+		left: 0px;
+		min-width: 100%;
+		overflow: hidden;
+		overflow-y: scroll;
+		&::-webkit-scrollbar {
+		    display: none;
+		}
+		-ms-overflow-style: none;
+		-webkit-overflow-scrolling: touch; /* momentum */
+	}
+
+	//
+	// re-establish normal flow
+	//
+	#_mb_rel_wrap {
+		._mb_reset();
+		position: relative;
+		display: block;
+		height: 100%;
+		min-height: 100%;
+		text-align: center;
+
+		// vertical centering ... @todo : revisit with flex ...
+		&:before {
+			content: " ";
+			display: inline-block;
+			height: 70%;
+			vertical-align: middle;
+			/*margin-right: -0.075em;  Adjusts for spacing */
+		}
+
+		@media only screen and (max-width: @mb-width_stack) {
+			padding: 0 10px;
+		}
+	}
+
+	//
+	// now we get to the regular contents
+	//
+	#_mb_content_wrap {
+		._mb_reset();
+		._mb_style-content();
+		box-sizing: border-box;
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+
+		transform: scale(0.5);
+		transition: all 0.3s 0.2s;
+
+		@media only screen and (max-width: @mb-width_stack) {
+			width: 100%;
+			margin-bottom: 50px;
+		}
+	}
+
+	//
+	// header
+	//
+	#_mb_header {
+		._mb_reset();
+		._mb_style-header();
+	}
+
+	//
+	// body
+	//
+	#_mb_body {
+		._mb_reset();
+		._mb_style-body();
+	}
+
+	//
+	// footer
+	//
+	#_mb_footer {
+		._mb_reset();
+		._mb_style-footer();
+	}
+
+	//
+	// footer confirm
+	//
+	#_mb_confirm_wrap {
+		._mb_clearfix();
+		text-align: right;
+		button:nth-child(1) {
+			float: left;
+			clear: none;
+		}
+	}
+
+	//
+	// close confirm
+	//
+	._mb_closeconfirm_wrap {
+		position: absolute;
+		top:100%;
+		left:0px;
+		width: 100%;
+		height: 0%;
+		opacity:0;
+		flex: 1 auto;
+		flex-wrap: wrap;
+		align-content: center;
+		align-items: center;
+		background: #000;
+		background: rgba(0,0,0,0.9);
+		text-align: center;
+		overflow: hidden;
+		z-index: @mb-z;
+		transition: all @mb-transition_speed;
+		._mb_closeconfirm_inner {
+			display: none;
+			flex: 1 auto;
+		}
+		button {
+			margin:0.5em;
+		}
+	}
+
+	//
+	// buttons
+	//
+	._mb_close {
+		._mb_reset();
+		padding:10px;
+		margin:0 0 10px;
+		line-height: 1;
+		border-radius: 0;
+		background: @mb-close_bg_color;
+		box-shadow: @mb-shadow;
+		cursor: pointer;
+		line-height: 1;
+		opacity: 0.95;
+		transition: opacity @mb-transition_speed;
+
+		span {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		&:focus,
+		&:hover {
+			opacity: 1;
+		}
+
+		&._mb_internal_close {
+			position: absolute;
+			right: 0px;
+			bottom: 100%;
+		}
+		&._mb_external_close {
+			display: none;
+			position:fixed;
+			right: @mb-pad *0.5;
+			top: @mb-close_from_top;
+			opacity: 0.95;
+		}
+
+		@media only screen and (max-width: @mb-width_stack) {
+			&._mb_internal_close {
+				display: none;
+			}
+			&._mb_external_close {
+				display: block;
+			}
+		}
+	}
+
+	&._mb_closeconfirm {
+		._mb_closeconfirm_wrap {
+			top:0%;
+			opacity: 1;
+			height: 100%;
+			._mb_closeconfirm_inner {
+				display: block;
+			}
+		}
+	}
+
+	//
+	// show & hide
+	//
+
+	&._mb_show_me {
+		opacity: 1;
+		bottom:0px;
+		transition: @mb-transition_show;
+		#_mb_fixed_wrap {
+			bottom:0px;
+		}
+		#_mb_content_wrap {
+			transform: scale(1);
+		}
+	}
+	&.hide_narp #_mb_confirm_narp {
+		display: none;
+	}
+}
+
+
+//
+// @todo - revisit scroll styling by venue ...
+//
+&._ua_venue_phone,
+&._ua_venue_tablet,
+&._ua_webkit {
+	#_mb_uber #_mb_fixed_wrap {
+		right: 0;
+		padding-right: 2em;
+	}
+	#_mb_rel_wrap {
+		padding-bottom: 50px;
+	}
+}

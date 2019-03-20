@@ -2,13 +2,14 @@
 
 ## local dev
 - install like `npm install`
+- Install de packags `yarn install`
 - start like `npm start`
 - stop like `npm stop`
 
 ## ref
 - Electron : [https://electronjs.org/docs/](https://electronjs.org/docs/)
 - WebVTT format/api reference : [https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API](https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API)
-- Special thanks to Anne van Kesteren for the open-source, creativecommons, webvtt validator js : [https://github.com/annevk/webvtt](https://github.com/annevk/webvtt)
+- Special thanks to Anne van Kesteren for the open-source, creative commons, webvtt validator js : [https://github.com/annevk/webvtt](https://github.com/annevk/webvtt)
 
 ### @todo :
 - dragover styles
@@ -21,3 +22,4 @@
 
 #### @revisit :
 - tips on additional formats like chapters, etc ?
+- more track format support? ( html, rtf, etc) ?

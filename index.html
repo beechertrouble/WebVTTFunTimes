@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Video Track .VTT Helper</title>
-  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="pub/css/main.min.css" />
 </head>
 
 <body>
@@ -22,7 +22,9 @@
       </section>
 
       <section id="track_wrap">
-        <textarea id="vtt_content" class="blocky" name="vtt_content" oninput="testVTT()" placeholder="enter track content here"></textarea>
+<textarea id="vtt_content" class="blocky" name="vtt_content" oninput="testVTT()" placeholder="enter track content here">WEBVTT
+
+</textarea>
       </section>
 
     </div>
@@ -250,7 +252,7 @@
   First caption here.
 
   00:00.700 --> 00:04.110
-  Even really really really really really really really really really really really really really really really really really really really really really long lines should not have 'new lines' in them, otherwise the format will break ....
+  another caption.
 
   00:04.500 --> 00:05.000
   Third caption here .. etc.</textarea>
@@ -261,21 +263,24 @@
     </div>
 
   </main>
+  <!--
   <footer>
-    We are using node <script>
+    Node <script>
       document.write(process.versions.node)
     </script>,
     Chrome <script>
       document.write(process.versions.chrome)
     </script>,
-    and Electron <script>
+    Electron <script>
       document.write(process.versions.electron)
     </script>.
   </footer>
+  -->
 
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script src="pub/js/app.concat.js"></script>
+  <script>if (window.module) module = window.module;</script>
 
-  <script src="js/vtt-parser.js"></script>
-  <script src="js/app.js"></script>
 </body>
 
 </html>

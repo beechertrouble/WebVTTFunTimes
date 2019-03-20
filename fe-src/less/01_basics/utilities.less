@@ -1,0 +1,256 @@
+/* ============================== pad and margin jams ========= */
+
+@iterations: 4;
+.pad-loop (@i) when (@i > 1) {
+	.pad-@{i} {
+		padding: @i * @pad;
+	}
+	.pad-loop(@i - 1);
+}
+.pad-loop (@iterations);
+.pad {padding: @pad;}
+.pad-half {
+	padding: 0.5 * @pad;
+}
+
+.pad-v-loop (@i) when (@i > 1) {
+	.pad-v_@{i} {
+		padding-top: @i * @pad;
+		padding-bottom: @i * @pad;
+	}
+	.pad-v-loop(@i - 1);
+}
+.pad-v-loop (@iterations);
+.pad-v {
+	padding-top: @pad;
+	padding-bottom: @pad;
+}
+.pad-v_half {
+	padding-top: @pad *0.5;
+	padding-bottom: @pad *0.5;
+}
+
+.pad-h-loop (@i) when (@i > 1) {
+	.pad-h_@{i} {
+		padding-right: @i * @pad;
+		padding-left: @i * @pad;
+	}
+	.pad-h-loop(@i - 1);
+}
+.pad-h-loop (@iterations);
+.pad-h {
+	padding-right: @pad;
+	padding-left: @pad;
+}
+.pad-h_half {
+	padding-right: @pad * 0.5;
+	padding-left: @pad * 0.5;
+}
+
+
+.pad-t-loop (@i) when (@i > 1) {
+	.pad-t_@{i} {
+		padding-top: @i * @pad;
+	}
+	.pad-t-loop(@i - 1);
+}
+.pad-t-loop (@iterations);
+.pad-t {
+	padding-top: @pad;
+}
+.pad-t_half {
+	padding-top: @pad * 0.5;
+}
+
+.pad-b-loop (@i) when (@i > 1) {
+	.pad-b_@{i} {
+		padding-bottom: @i * @pad;
+	}
+	.pad-b-loop(@i - 1);
+}
+.pad-b-loop (@iterations);
+.pad-b {
+	padding-bottom: @pad;
+}
+.pad-b_half {
+	padding-bottom: @pad * 0.5;
+}
+
+.pad-r-loop (@i) when (@i > 1) {
+	.pad-r_@{i} {
+		padding-right: @i * @pad;
+	}
+	.pad-r-loop(@i - 1);
+}
+.pad-r-loop (@iterations);
+.pad-r {
+	padding-right: @pad;
+}
+.pad-r_half {
+	padding-right: @pad * 0.5;
+}
+
+.pad-l-loop (@i) when (@i > 1) {
+	.pad-l_@{i} {
+		padding-left: @i * @pad;
+	}
+	.pad-l-loop(@i - 1);
+}
+.pad-l-loop (@iterations);
+.pad-l{
+	padding-left: @pad;
+}
+.pad-l_half {
+	padding-left: @pad * 0.5;
+}
+
+.nopad { padding: 0 !important; }
+.nopad-t { padding-top: 0 !important; }
+.nopad-r { padding-right: 0 !important; }
+.nopad-b { padding-bottom: 0 !important; }
+.nopad-l { padding-left: 0 !important; }
+
+
+.mar-loop (@i) when (@i > 1) {
+	.mar-@{i} {
+		margin: @i * @pad;
+	}
+	.mar-loop(@i - 1);
+}
+.mar-loop (@iterations);
+.mar {margin: @pad;}
+.mar-half {margin: @pad * 0.5;}
+
+.mar-v-loop (@i) when (@i > 1) {
+	.mar-v_@{i} {
+		margin-top: @i * @pad;
+		margin-bottom: @i * @pad;
+	}
+	.mar-v-loop(@i - 1);
+}
+.mar-v-loop (@iterations);
+.mar-v {
+	margin-top: @pad;
+	margin-bottom: @pad;
+}
+.mar-v_half {
+	margin-top: @pad * 0.5;
+	margin-bottom: @pad * 0.5;
+}
+
+.mar-h-loop (@i) when (@i > 1) {
+	.mar-h_@{i} {
+		margin-right: @i * @pad;
+		margin-left: @i * @pad;
+	}
+	.mar-h-loop(@i - 1);
+}
+.mar-h-loop (@iterations);
+.mar-h {
+	margin-right: @pad;
+	margin-left: @pad;
+}
+.mar-h_half {
+	margin-right: @pad * 0.5;
+	margin-left: @pad * 0.5;
+}
+
+.mar-t-loop (@i) when (@i > 1) {
+	.mar-t_@{i} {
+		margin-top: @i * @pad;
+	}
+	.mar-t-loop(@i - 1);
+}
+.mar-t-loop (@iterations);
+.mar-t {
+	margin-top: @pad;
+}
+.mar-t_half {
+	margin-top: @pad * 0.5;
+}
+
+.mar-b-loop (@i) when (@i > 1) {
+	.mar-b_@{i} {
+		margin-bottom: @i * @pad;
+	}
+	.mar-b-loop(@i - 1);
+}
+.mar-b-loop (@iterations);
+.mar-b {
+	margin-bottom: @pad;
+}
+.mar-b_half {
+	margin-bottom: @pad * 0.5;
+}
+
+.mar-l-loop (@i) when (@i > 1) {
+	.mar-l_@{i} {
+		margin-left: @i * @pad;
+	}
+	.mar-l-loop(@i - 1);
+}
+.mar-l-loop (@iterations);
+.mar-l {
+	margin-left: @pad;
+}
+.mar-l_half {
+	margin-left: @pad * 0.5;
+}
+
+.mar-r-loop (@i) when (@i > 1) {
+	.mar-r_@{i} {
+		margin-right: @i * @pad;
+	}
+	.mar-r-loop(@i - 1);
+}
+.mar-r-loop (@iterations);
+.mar-r {
+	margin-right: @pad;
+}
+.mar-r_half {
+	margin-right: @pad * 0.5;
+}
+
+.nomar { margin: 0 !important; }
+.nomar-t { margin-top: 0 !important; }
+.nomar-r { margin-right: 0 !important; }
+.nomar-b { margin-bottom: 0 !important; }
+.nomar-l { margin-left: 0 !important; }
+
+.visiblyhidden {
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap; /* added line */
+	width: 1px;
+}
+
+
+.abs-fill {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.left,
+.right {
+	float:left;
+	clear: none;
+}
+
+.right {
+	float:right;
+}
+
+.clearfix {
+	.clearfix();
+}
+
+
+.hidden-by-opacity {
+	opacity: 0;
+}

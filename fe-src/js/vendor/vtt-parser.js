@@ -708,4 +708,4 @@
   }
   if (typeof window !== 'undefined') exportify(window);
   if (typeof exports !== 'undefined') exportify(exports);
-})()
+})();
