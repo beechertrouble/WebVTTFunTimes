@@ -270,15 +270,30 @@
   //_trackLabel.addEventListener('click', setLabelAsModified);
   _trackLabel.addEventListener('change', setLabelAsModified);
 
-  _body.addEventListener('drag', nix);
-  _body.addEventListener('dragstart', nix);
-  _body.addEventListener('dragend', nix);
-  _body.addEventListener('dragover', nix);
-  _body.addEventListener('dragenter', nix);
-  _body.addEventListener('dragleave', nix);
+  function showDroppableState(e) {
+    nix(e);
+    clearTimeout(hideDroppableStateTimer);
+    _body.classList.add('state-droppable');
+  }
+  var hideDroppableStateTimer;
+  function hideDroppableState(e) {
+    nix(e);
+    clearTimeout(hideDroppableStateTimer);
+    hideDroppableStateTimer = setTimeout(function(){
+      _body.classList.remove('state-droppable');
+    }, 150);
+  }
+
+  _body.addEventListener('drag', showDroppableState);
+  _body.addEventListener('dragstart', showDroppableState);
+  _body.addEventListener('dragend', hideDroppableState);
+  _body.addEventListener('dragover', showDroppableState);
+  _body.addEventListener('dragenter', showDroppableState);
+  _body.addEventListener('dragleave', hideDroppableState);
   _body.addEventListener('drop', function(e) {
 
     nix(e);
+    hideDroppableState(e);
     var files = e.dataTransfer.files;
 
     if (files.length <= 0)

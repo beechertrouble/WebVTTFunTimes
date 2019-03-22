@@ -148,9 +148,9 @@ var _tipzy = (function() {
 
 			$anchor
 				.attr({
-					'aria-describedby' : _tip.UID,
-					'data-tipzytitle' : $anchor.attr('title')
+					'aria-describedby' : _tip.UID
 				})
+				.data('tipzytitle', $anchor.data('tipzytitle') !== undefined ? $anchor.data('tipzytitle') : $anchor.attr('title'))
 				.removeAttr('title')
 				.on('blur mouseout',  function(e){ //onMouseout element
 					_tip.hide();
@@ -392,12 +392,16 @@ var _tipzy = (function() {
 				.on('touchstart', function(e){
 					_tipzy.hideAll();
 				})
-				.on('scrollStopped', function(e){
+				.on('scroll', function(e){
 					_tipzy.updatePageStats();
+				})
+				.on('resize', function(e){
+					_tipzy.updatePageStats();
+				})
+				.on('scrollStopped', function(e){
 					_tipzy.parseTips();
 				})
 				.on('resizeStopped', function(e){
-					_tipzy.updatePageStats();
 					_tipzy.parseTips();
 				});
 
