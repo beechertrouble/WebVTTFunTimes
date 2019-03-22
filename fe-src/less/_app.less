@@ -77,7 +77,6 @@ textarea {
 #main_bits_wrap > * {
   flex: 1 1 auto;
   box-sizing: border-box;
-  max-width: 50%;
 }
 
 #vid_wrap {
@@ -238,7 +237,16 @@ textarea {
   margin: 0 auto;
 }
 
+#current_time-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: @pad;
+  border: 1px solid #333;
+  background: #fff;
+}
 
-video::cue {
-  font-size: 1.25rem;
+#current_time-display {
+  text-align: right;
+  width: 7.5em;
 }

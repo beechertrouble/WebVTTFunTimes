@@ -251,15 +251,19 @@
   00:00.700 --> 00:04.110
   First caption here.
 
-  00:00.700 --> 00:04.110
+  00:06.450 --> 00:10.320
   another caption.
 
-  00:04.500 --> 00:05.000
+  00:14.500 --> 00:20.000
   Third caption here .. etc.</textarea>
           </li>
           <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API" target="_blank">more info on VTT formatting here</a></li>
         </ul>
       </div>
+    </div>
+
+    <div id="current_time-wrap" class="_tipzy_anchor" data-tipzycontent="Current Timestamp">
+      <input id="current_time-display" readonly type="text" value="000:00:00.000" autocomplete="off" />
     </div>
 
   </main>
@@ -277,8 +281,15 @@
   </footer>
   -->
 
+
   <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-  <script src="pub/js/app.concat.js"></script>
+  <script src="fe-src/js/vendor/jquery-3.1.1.slim.min.js"></script>
+  <script src="fe-src/js/vendor/inView.js"></script>
+  <script src="fe-src/js/vendor/modalBasic.js"></script>
+  <script src="fe-src/js/vendor/tipzy.js"></script>
+  <script src="fe-src/js/vendor/vtt-parser.js"></script>
+  <script src="fe-src/js/app.js"></script>
+  <!--<script src="pub/js/app.concat.js"></script>-->
   <script>if (window.module) module = window.module;</script>
 
 </body>

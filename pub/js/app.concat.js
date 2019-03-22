@@ -1516,16 +1516,27 @@ var _tipzy = (function() {
 
 (function () {
 
-  var _submitButton = document.getElementById("vtt_submit"),
+  var _body = document.getElementsByTagName("body")[0],
+    _vidWrap = document.getElementById("vid_wrap"),
+    _vid =  document.getElementById("vid"),
+    _track =  document.getElementById("track"),
+    _trackLabel = document.getElementById('vtt_fileName'),
+    _trackKind = document.getElementById('vtt_type'),
+    _trackLang = document.getElementById('vtt_lang'),
+    _URL = window.URL || window.webkitURL,
+    reader,
+    _submitButton = document.getElementById("vtt_submit"),
     _downloadLink = document.createElement('a'),
-    _textArea = document.getElementById("vtt_content"),
+    _fileEditTextarea = document.getElementById("vtt_content"),
     _vtt_content,
+    _current_time = '000:00:00.000',
+    _current_timeDisplay = document.getElementById("current_time-display"),
     _transcriptTimeCodeRegEx = /(\d{2}\:\d{2}\:\d{2}\:\d{2})/
     ;
 
   _submitButton.addEventListener('click', function(e){
 
-    _downloadLink.setAttribute('href', 'data:text/vtt;charset=utf-8,' + encodeURIComponent(_editArea.value));
+    _downloadLink.setAttribute('href', 'data:text/vtt;charset=utf-8,' + encodeURIComponent(_fileEditTextarea.value));
 
     var label = _trackLabel.value.length >= 1 ? _trackLabel.value : 'myTrack',
       kind = _trackKind.value,
@@ -1541,10 +1552,25 @@ var _tipzy = (function() {
     return s.substr(s.length-size);
   }
 
+  function currentTimeToTime(secondsDotMilliseconds) {
+
+    var ms = secondsDotMilliseconds * 1000;
+    var milliseconds = parseInt((ms%1000)/100),
+      seconds = parseInt((ms/1000)%60),
+      minutes = parseInt((ms/(1000*60))%60),
+      hours = parseInt((ms/(1000*60*60))%24);
+
+    hours = zeroPad(hours, 3);
+    minutes = zeroPad(minutes, 2);
+    seconds = zeroPad(seconds, 2);
+
+    return hours + ":" + minutes + ":" + seconds + "." + milliseconds + '00';
+  }
+
   function testVTT() {
 
     var pa = new WebVTTParser(),
-      r = pa.parse(_textArea.value, "subtitles/captions/descriptions"),
+      r = pa.parse(_fileEditTextarea.value, "subtitles/captions/descriptions"),
       wrap = document.getElementById("feedback_wrap"),
       ol = document.getElementById("feedback_list"),
       p = document.getElementById("feedback_status"),
@@ -1554,22 +1580,22 @@ var _tipzy = (function() {
     ol.textContent = "";
 
     if (r.errors.length > 0) {
-      if(_textArea.value.length <= 0) {
+      if(_fileEditTextarea.value.length <= 0) {
         p.textContent = "nothing to validate";
         wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-        _textArea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+        _fileEditTextarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
         _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
         _submitButton.setAttribute('disabled', true);
       } else if (r.errors.length < 5) {
         p.textContent = "found some errors (" + r.errors.length + ")";
         wrap.style.background = "HSLA(200, 100%, 40%, 1.00)";
-        _textArea.style.background = "HSLA(42, 100%, 81%, 1.00)";
+        _fileEditTextarea.style.background = "HSLA(42, 100%, 81%, 1.00)";
         _submitButton.style.background = "HSLA(200, 100%, 40%, 1.00)";
         _submitButton.setAttribute('disabled', true);
       } else {
         p.textContent = "Uh OH!";
         wrap.style.background = "HSLA(4, 56%, 43%, 1.00)";
-        _textArea.style.background = "pink";
+        _fileEditTextarea.style.background = "pink";
         _submitButton.style.background = "HSLA(4, 56%, 43%, 1.00)";
         _submitButton.setAttribute('disabled', true);
       }
@@ -1583,13 +1609,14 @@ var _tipzy = (function() {
         ol.appendChild(li);
       }
     } else {
+
       p.textContent = "Your WebVTT is valid!";
       wrap.style.background = "HSLA(142, 77%, 38%, 1.00)";
-      _textArea.style.background = "white";
+      _fileEditTextarea.style.background = "white";
       _submitButton.style.background = "HSLA(142, 77%, 38%, 1.00)";
       _submitButton.removeAttribute('disabled');
 
-      var data = new Blob([_editArea.value], {type: 'text/vtt'});
+      var data = new Blob([_fileEditTextarea.value], {type: 'text/vtt'});
       var trackFileURL = _URL.createObjectURL(data);
       _track.src = trackFileURL;
       _vid.textTracks[0].mode = "showing";
@@ -1598,7 +1625,7 @@ var _tipzy = (function() {
 
     var s = new WebVTTSerializer();
     pre.textContent = s.serialize(r.cues);
-    _vtt_content = _textArea.value;
+    _vtt_content = _fileEditTextarea.value;
 
   }
   window.testVTT = testVTT;
@@ -1607,18 +1634,6 @@ var _tipzy = (function() {
   //
   //
   //
-
-  var _body = document.getElementsByTagName("body")[0],
-    _vidWrap = document.getElementById("vid_wrap"),
-    _vid =  document.getElementById("vid"),
-    _track =  document.getElementById("track"),
-    _trackLabel = document.getElementById('vtt_fileName'),
-    _trackKind = document.getElementById('vtt_type'),
-    _trackLang = document.getElementById('vtt_lang'),
-    _URL = window.URL || window.webkitURL,
-    _editArea = document.getElementById("vtt_content"),
-    reader
-    ;
 
   var nix = function(e){
       e.preventDefault();
@@ -1657,7 +1672,7 @@ var _tipzy = (function() {
         setTrackLabelFromFile(file);
         reader = new FileReader();
         reader.onload = function(e) {
-          _editArea.value = e.target.result;
+          _fileEditTextarea.value = e.target.result;
           testVTT();
         };
         reader.readAsText(file);
@@ -1669,7 +1684,8 @@ var _tipzy = (function() {
           var txt = e.target.result;
           var lines = txt.split("\n"),
             cues = [],
-            newValue = ['WEBVTT'];
+            newValue = ['WEBVTT'],
+            startOffset;
 
           lines.forEach(function(line) {
             if(line.search(_transcriptTimeCodeRegEx) >= 1) {
@@ -1679,10 +1695,17 @@ var _tipzy = (function() {
 
               split.forEach(function(s) {
                 if(s.search(_transcriptTimeCodeRegEx) >= 0) {
-                  var time = s.split(/\:/g);
+
+                  var time = s.split(/\:/g),
+                    startHour = time[0]*1,
+                    offset = (startHour - 1) >= 0 ? 1 : 0;
+
+                  startOffset = startOffset !== undefined ? startOffset : offset;
+
                   derp = [
-                    [time[0]*1, time[1]*1, time[2]*1, time[3]*1]
+                    [(startHour - startOffset), time[1]*1, time[2]*1, time[3]*1]
                   ];
+
                 } else if(derp.length === 1 && s.search(/\x07/g) >= 0) {
                   var cue = s.split(/\x07/g);
                   if(cue.length <= 3 || cue[2] === undefined || cue[2].length <= 0 || cue[2] === "[END]")
@@ -1704,24 +1727,30 @@ var _tipzy = (function() {
 
             var content = c[1],
               start = c[0],
-              startTime = zeroPad(start[0], 3) + ':' + zeroPad(start[1], 2) + ':' + zeroPad(start[2], 2) + '.' + zeroPad(start[3], 3),
-              padSec = Math.round(c[3] * 0.23),
-              endSec = start[2] + (padSec >= 1 ? padSec : 1),
+              startHr = start[0],
+              startMin = start[1],
+              startSec = start[2],
+              startMil = start[3],
+              endMilTime = zeroPad(startMil + '0', 3),
+              startTime = zeroPad(startHr, 3) + ':' + zeroPad(startMin, 2) + ':' + zeroPad(startSec, 2) + '.' + endMilTime,
+              wordCount = c[2],
+              padSec = Math.round(wordCount * 0.35),
+              endSec = startSec + (padSec >= 1 ? padSec : 1),
               endTime;
 
             if(endSec < 60) {
-              endTime = zeroPad(start[0], 3) + ':' + zeroPad(start[1], 2) + ':' + zeroPad(endSec, 2) + '.' + zeroPad(start[3], 3);
+              endTime = zeroPad(startHr, 3) + ':' + zeroPad(startMin, 2) + ':' + zeroPad(endSec, 2) + '.' + endMilTime;
             } else {
               var addMin = Math.floor(endSec / 60);
-              var endMin = start[1] + addMin;
+              var endMin = startMin + addMin;
               if(endMin < 60) {
                 endSec = endSec - (addMin * 60);
-                endTime = zeroPad(start[0], 3) + ':' + zeroPad(endMin, 2) + ':' + zeroPad(endSec, 2) + '.' + zeroPad(start[3], 3);
+                endTime = zeroPad(startHr, 3) + ':' + zeroPad(endMin, 2) + ':' + zeroPad(endSec, 2) + '.' + endMilTime;
               } else {
                 var addHrs = (endMin / 60);
-                var endHrs = start[0] + addHrs;
+                var endHrs = startHr + addHrs;
                 endMin = endMin - (endMin * 60);
-                endTime = zeroPad(endHrs, 3) + ':' + zeroPad(endMin, 2) + ':' + zeroPad(endSec, 2) + '.' + zeroPad(start[3], 3);
+                endTime = zeroPad(endHrs, 3) + ':' + zeroPad(endMin, 2) + ':' + zeroPad(endSec, 2) + '.' + endMilTime;
               }
             }
 
@@ -1730,7 +1759,7 @@ var _tipzy = (function() {
           });
 
 
-          _editArea.value = newValue.join("\n\n");
+          _fileEditTextarea.value = newValue.join("\n\n");
           setTrackLabelFromFile(file);
           testVTT();
 
@@ -1778,15 +1807,33 @@ var _tipzy = (function() {
 
   });
 
-  _textArea.addEventListener('paste', function(e){
+  _fileEditTextarea.addEventListener('paste', function(e){
     var clipboardData = e.clipboardData || window.clipboardData;
     var pastedData = clipboardData.getData('Text');
     console.log('PASTED DATA! :::: ', pastedData.search(_transcriptTimeCodeRegEx), (pastedData.match(/\n/g)||[]).length, pastedData.split("\n"));
     //var lines = pastedData.split("\r");
     // setTimeout(function() {
-    //   var pastedData = _textArea.value;
+    //   var pastedData = _fileEditTextarea.value;
     //   console.log('PASTED DATA! :::: ', pastedData.search(_transcriptTimeCodeRegEx), (pastedData.match(/\n/g)||[]).length);
     // }, 250);
   });
+
+  //
+  // video events
+  //
+  _vid.addEventListener('timeupdate', function(a,b,c){
+    // always show the controls ...
+    // _vid.setAttribute("controls","controls");
+    _current_time = currentTimeToTime(_vid.currentTime);
+    _current_timeDisplay.value = _current_time;
+
+  }, false);
+
+
+  //
+  // init some tings
+  //
+  _tipzy.init();
+
 
 })();
