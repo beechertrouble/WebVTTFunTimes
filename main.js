@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, shell } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,7 +24,7 @@ function createWindow () {
     win = null
   })
 
-  // Create the Application's main menu
+  // Create the Application's main menu & allow keyboard shortcuts
   var template = [{
       label: "WebVTTFunTimes",
       submenu: [
@@ -41,10 +41,22 @@ function createWindow () {
           { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
           { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
           { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+      ]}, {
+      label: "Dev",
+      submenu: [
+          { label: "Open Devtools", accelerator: "Shift+CmdOrCtrl+D", click: function() { win.webContents.openDevTools(); }}
       ]}
   ];
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+
+  // open links in actual browser windows
+  // requires shell
+  win.webContents.on('new-window', (event, url) => {
+    event.preventDefault()
+    shell.openExternal(url)
+  });
+
 
 }
 
