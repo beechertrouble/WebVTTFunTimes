@@ -14,11 +14,8 @@
 - Special thanks to Anne van Kesteren for the open-source, creative commons, webvtt validator js : [https://github.com/annevk/webvtt](https://github.com/annevk/webvtt)
 
 ### @todo :
-- dragover styles
-- current time
 - highlight current cue ...
 - alternative track UI ?
-- transcript import ( word doc, etc ...)
 - feeback review  ( copy, styles, conditions, ...)
 - layout ....
 

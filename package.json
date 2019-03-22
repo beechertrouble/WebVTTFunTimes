@@ -1,10 +1,10 @@
 {
-  "name": "html5-video-track-builder",
+  "name": "WebVTTFunTimes",
   "version": "0.1.0",
-  "description": "handy helper for making vtt track files for html5 videos",
+  "description": "handy helper for making .vtt track files for html5 videos",
   "repository": {
     "type": "git",
-    "url": "https://github.com/beechertrouble/html5VideoTrackHelper"
+    "url": "https://github.com/beechertrouble/WebVTTFunTimes"
   },
   "main": "main.js",
   "scripts": {
