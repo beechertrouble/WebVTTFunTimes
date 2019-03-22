@@ -1,2 +1,4 @@
 node_modules/
 package-lock.json
+WebVTTFunTimes-darwin-x64
+*.DS_Store

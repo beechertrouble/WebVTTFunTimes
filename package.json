@@ -8,21 +8,23 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package": "asar pack WebVTTFunTimes-darwin-x64/WebVTTFunTimes.app/Contents/Resources/app WebVTTFunTimes-darwin-x64/WebVTTFunTimes.app/Contents/Resources/app.asar && rm -rf WebVTTFunTimes-darwin-x64/WebVTTFunTimes.app/Contents/Resources/app",
+    "build": "electron-packager . WebVTTFunTimes --overwrite --ignore=fe-src --ignore=node_modules/electron-* --ignore=.gitignore --ignore=Gruntfile.js --ignore=README.md --ignore=package-lock.json --ignore=node_modules/grunt-cli"
   },
   "author": "beechbot",
   "license": "MIT",
   "devDependencies": {
+    "asar": "^1.0.0",
     "electron": "^4.1.0",
-    "grunt": "^1.0.2",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-less": "^2.0.0",
-    "grunt-contrib-requirejs": "^1.0.0",
-    "grunt-contrib-uglify": "^3.3.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "jquery": "^3.3.1"
-  }
+    "electron-packager": "^13.1.1",
+    "grunt": "latest",
+    "grunt-contrib-clean": "latest",
+    "grunt-contrib-concat": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-watch": "latest"
+  },
+  "dependencies": {}
 }

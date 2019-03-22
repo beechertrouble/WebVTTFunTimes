@@ -5,6 +5,8 @@
 - Install de packags `yarn install`
 - start like `npm start`
 - stop like `npm stop`
+- build an app like `npm run build`
+- package an app like `npm run package` ( after building )
 
 ## ref
 - Electron : [https://electronjs.org/docs/](https://electronjs.org/docs/)
