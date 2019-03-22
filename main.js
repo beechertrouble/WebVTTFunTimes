@@ -32,6 +32,10 @@ function createWindow () {
           { type: "separator" },
           { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
       ]}, {
+      label: "File",
+      submenu: [
+          { label: "Save", accelerator: "CmdOrCtrl+S", click: function() { win.webContents.executeJavaScript("var saveEvent = new Event('trigger.save');window.dispatchEvent(saveEvent);"); }}
+      ]}, {
       label: "Edit",
       submenu: [
           { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },

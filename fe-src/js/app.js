@@ -19,7 +19,9 @@
     _transcriptTimeCodeRegEx = /(\d{2}\:\d{2}\:\d{2}\:\d{2})/
     ;
 
-  _submitButton.addEventListener('click', function(e){
+  function saveFile() {
+
+    // @todo : check for validity?
 
     _downloadLink.setAttribute('href', 'data:text/vtt;charset=utf-8,' + encodeURIComponent(_fileEditTextarea.value));
 
@@ -29,6 +31,12 @@
 
     _downloadLink.setAttribute('download', label + '_' + kind + "-" + lang + ".vtt");
     _downloadLink.click();
+  };
+
+  _submitButton.addEventListener('click', function(e){
+
+    nix(e);
+    saveFile();
 
   });
 
@@ -329,6 +337,9 @@
 
   }, false);
 
+  window.addEventListener('trigger.save', function(e){
+    saveFile();
+  });
 
   //
   // init some tings
